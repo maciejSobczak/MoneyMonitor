@@ -4,7 +4,6 @@ using MoneyMonitor.API.Domain.Models;
 using MoneyMonitor.API.Domain.Services;
 using MoneyMonitor.API.Extensions;
 using MoneyMonitor.API.Resources;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -31,7 +30,7 @@ namespace MoneyMonitor.API.Domain.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] SaveAssetResource resource)
+        public async Task<IActionResult> PostAsync([FromBody] AssetResource resource)
         {
             if (!ModelState.IsValid)
             {
@@ -46,12 +45,12 @@ namespace MoneyMonitor.API.Domain.Controllers
                 return BadRequest(result.Message);
             }
 
-            var assetResource = _mapper.Map<SaveAssetResource>(result.Asset);
+            var assetResource = _mapper.Map<AssetResource>(result.Asset);
             return Ok(assetResource);
         }
 
         [HttpPut, Route("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromBody] SaveAssetResource resource)
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] AssetResource resource)
         {
             if (!ModelState.IsValid)
             {
@@ -66,8 +65,22 @@ namespace MoneyMonitor.API.Domain.Controllers
                 return BadRequest(result.Message);
             }
 
-            var assetResource = _mapper.Map<SaveAssetResource>(result.Asset);
+            var assetResource = _mapper.Map<AssetResource>(result.Asset);
             return Ok(assetResource);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await _assetService.DeleteAsync(id);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            var response = _mapper.Map<AssetResource>(result.Asset);
+            return Ok(response);
         }
     }
 }

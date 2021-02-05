@@ -9,7 +9,6 @@ namespace MoneyMonitor.API.Mapping
         public ResourceToModelProfile()
         {
             CreateMap<AssetResource, Asset>();
-            CreateMap<SaveAssetResource, Asset>();
             CreateMap<AssetTypeResource, AssetType>();
         }
     }

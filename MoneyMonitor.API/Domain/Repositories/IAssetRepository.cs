@@ -11,5 +11,6 @@ namespace MoneyMonitor.API.Domain.Repositories
         Task AddAsync(Asset asset);
         Task<Asset> FindByIdAsync(int id);
         void Update(Asset asset);
+        void Delete(Asset asset);
     }
 }

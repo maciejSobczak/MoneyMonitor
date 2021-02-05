@@ -25,12 +25,17 @@ namespace MoneyMonitor.API.Persistence.Repositories
 
         public async Task<Asset> FindByIdAsync(int id)
         {
-            return await _context.Assets.FindAsync(id);
+            return await _context.Assets.Include(p => p.AssetType).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public void Update(Asset asset)
         {
             _context.Assets.Update(asset);
+        }
+
+        public void Delete(Asset asset)
+        {
+            _context.Assets.Remove(asset);
         }
     }
 }

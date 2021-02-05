@@ -19,6 +19,28 @@ namespace MoneyMonitor.API.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<SaveAssetResponse> DeleteAsync(int Id)
+        {
+            var assetToDelete = await _assetRepository.FindByIdAsync(Id);
+
+            if(assetToDelete == null)
+            {
+                return new SaveAssetResponse($"Asset with Id = {Id} does not exist.");
+            }
+
+            try
+            {
+                _assetRepository.Delete(assetToDelete);
+                await _unitOfWork.CompleteAsync();
+
+                return new SaveAssetResponse(assetToDelete);
+            }
+            catch(Exception ex)
+            {
+                return new SaveAssetResponse($"An error occured while deleting the asset: {ex.Message}");
+            }
+        }
+
         public async Task<IEnumerable<Asset>> ListAsync()
         {
             return await _assetRepository.ListAsync();
